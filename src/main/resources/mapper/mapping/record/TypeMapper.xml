@@ -1,0 +1,82 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.nature.mapper.record.TypeMapper">
+
+    <!--基础 表字段定义 -->
+    <sql id="basicColumn">
+        id,title,note,isPublic
+    </sql>
+
+    <!-- 查询所有数据 -->
+    <select id="list" resultType="Type" parameterType="java.lang.String">
+        select
+        <include refid="basicColumn"/>
+        from record_type
+        <where>
+            <if test="key != null">
+                title like concat(concat('%',#{key}),'%')
+                or note like concat(concat('%',#{key}),'%')
+            </if>
+        </where>
+        order by id desc
+    </select>
+
+    <!-- 根据ID查询数据 -->
+    <select id="findById" resultType="Type" parameterType="java.lang.Integer">
+        select
+        <include refid="basicColumn"></include>
+        from record_type where id = #{id}
+    </select>
+
+    <!-- 新建 -->
+    <insert id="add" parameterType="Type" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO record_type (title,note,isPublic)
+        VALUES ( #{title},#{note},#{isPublic})
+    </insert>
+
+    <!-- 修改-->
+    <update id="modify" parameterType="Type">
+        UPDATE record_type set title =#{title} ,note = #{note}
+        WHERE  id = #{id}
+    </update>
+
+
+    <!-- 删除 -->
+    <delete id="deleteById" parameterType="java.lang.Integer">
+        DELETE FROM record_type WHERE  id = #{id} and isPublic = 0 and id not in
+        ( select distinct typeId from record_record)
+    </delete>
+
+    <!-- 批量删除 -->
+    <delete id="deleteByIds" parameterType="java.util.Arrays">
+        DELETE FROM record_type WHERE id in
+        <foreach collection="ids" item="item" index="index" open="(" separator="," close=")">
+            ${item}
+        </foreach>
+        and isPublic = 0 and id not in ( select distinct labelId from record_record)
+    </delete>
+
+    <!-- 启用、禁用 -->
+    <update id="use" parameterType="java.util.Arrays">
+        update record_type set isPublic = (isPublic+1)%2 where id in
+        <foreach collection="ids" item="item" index="index" open="(" separator="," close=")">
+            ${item}
+        </foreach>
+    </update>
+
+
+    <!-- 查询所有数据 -->
+    <select id="listForPublic" resultType="Type" parameterType="java.lang.String">
+        select
+        <include refid="basicColumn"/>
+        from record_type where isPublic = 1
+        <if test="key != null">
+            and
+            ( title like concat(concat('%',#{key}),'%')
+            or note like concat(concat('%',#{key}),'%')
+            )
+        </if>
+        order by id desc
+    </select>
+
+</mapper>

@@ -1,0 +1,65 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.nature.mapper.record.BorrowMapper">
+
+    <!--基础 表字段定义 -->
+    <sql id="basicColumn">
+        id,recordId,recordTitle,borrowId,borrowName,borrowDate,dealId,dealName,isBack,backDate,borrowDayNum
+        ,isBackLater,note
+    </sql>
+
+    <!-- 查询所有数据 -->
+    <select id="list" resultType="Borrow" parameterType="java.lang.String">
+        select
+        <include refid="basicColumn"/>
+        from record_borrow
+        <where>
+            <if test="key != null">
+                recordTitle like concat(concat('%',#{key}),'%')
+                or borrowName like concat(concat('%',#{key}),'%')
+                or dealName like concat(concat('%',#{key}),'%')
+                or borrowName like concat(concat('%',#{key}),'%')
+            </if>
+        </where>
+        order by id desc
+    </select>
+
+    <select id="listByBorrowId" resultType="Borrow" parameterType="java.util.HashMap">
+        select
+        <include refid="basicColumn"/>
+        from record_borrow
+        where borrowId = ${borrowId}
+        <if test="key != null">
+            and (
+            recordTitle like concat(concat('%',#{key}),'%')
+            or borrowName like concat(concat('%',#{key}),'%')
+            or dealName like concat(concat('%',#{key}),'%')
+            or borrowName like concat(concat('%',#{key}),'%')
+            )
+        </if>
+        order by id desc
+    </select>
+
+
+    <!-- 根据ID查询数据 -->
+    <select id="findById" resultType="Borrow" parameterType="java.lang.Integer">
+        select
+        <include refid="basicColumn"></include>
+        from record_borrow where id = #{id}
+    </select>
+
+    <!-- 新建 -->
+    <insert id="add" parameterType="Borrow" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO record_borrow (recordId,recordTitle,borrowId,borrowName,borrowDate,note,borrowDayNum)
+        VALUES (#{recordId},#{recordTitle},#{borrowId},#{borrowName},#{borrowDate},#{note},#{borrowDayNum})
+    </insert>
+
+    <!-- 修改-->
+    <update id="modify" parameterType="Borrow">
+        UPDATE record_borrow set dealId =#{dealId} ,dealName = #{dealName}
+        ,isBack = #{isBack},backDate = #{backDate},isBackLater = #{isBackLater}
+        WHERE  id = #{id}
+    </update>
+
+
+</mapper>

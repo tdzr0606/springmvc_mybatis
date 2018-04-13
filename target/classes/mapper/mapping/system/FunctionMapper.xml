@@ -1,0 +1,80 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.nature.mapper.system.FunctionMapper">
+
+    <!--基础 表字段定义 -->
+    <sql id="basicColumn">
+        id,functionName,url,parentId,createTime,updateTime
+    </sql>
+
+    <!-- 查询所有数据 -->
+    <select id="list" resultType="Function" parameterType="java.lang.String">
+        select
+        <include refid="basicColumn"/>
+        from web_function
+        <where>
+            <if test="key != null">
+                functionName like CONCAT(concat('%',#{key}),'%')
+            </if>
+        </where>
+        order by id desc
+    </select>
+
+    <!-- 根据ID查询数据 -->
+    <select id="findById" resultType="Function" parameterType="java.lang.Integer">
+        select <include refid="basicColumn"></include> from web_function where id = #{id}
+    </select>
+
+    <!-- 新建 -->
+    <insert id="add" parameterType="Function" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO web_function (functionName,url,parentId,createTime)
+        VALUES ( #{functionName},#{url},#{parentId},#{createTime})
+    </insert>
+
+    <!-- 修改-->
+    <update id="modify" parameterType="Function">
+        UPDATE web_function set functionName =#{functionName} ,url = #{url},
+        parentId = #{parentId},createTime=#{createTime},updateTime=#{updateTime}
+        WHERE  id = #{id}
+    </update>
+
+
+    <!-- 删除 -->
+    <delete id="deleteById" parameterType="java.lang.Integer">
+        DELETE FROM web_function WHERE  id = #{id}
+    </delete>
+
+
+    <!-- 批量删除 -->
+    <delete id="deleteByIds" parameterType="java.util.Arrays">
+        DELETE FROM web_function where id in
+        <foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <!-- 查询 父级菜单 -->
+    <select id="listParent" resultType="Function">
+        SELECT
+        <include refid="basicColumn"/>
+        from web_function
+        where ( parentId is null or parentId = 0)
+        order by id desc
+    </select>
+
+
+    <!-- 查询 子级菜单 -->
+    <select id="listSub" resultType="Function">
+        SELECT
+        <include refid="basicColumn"/>
+        from web_function
+        where ( parentId is not null and parentId != 0)
+        order by id desc
+    </select>
+
+    <!-- 统计 父级菜单Id 数量 -->
+    <select id="countByParentId" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+        select count(1) from web_function where parentId = ${parentId}
+    </select>
+
+</mapper>

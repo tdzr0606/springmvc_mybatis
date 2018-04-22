@@ -15,7 +15,7 @@
     <!-- 任务扫描 -->
     <task:annotation-driven/>
 
-    <context:component-scan base-package="com.nature.controller"/>
+    <context:component-scan base-package="com.nature.controller,com.nature.component"/>
     <bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">
         <property name="converters">
             <set>

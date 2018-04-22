@@ -4,8 +4,68 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>首页</title>
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/echarts.common.min.js"></script>
 </head>
 <body>
-    index<a href="/webAdmin">后台</a>
+index<a href="/webAdmin">后台</a>
+<div id="cpuDiv" style="width:600px;height:400px;"></div>
+<script type="text/javascript">
+    // 基于准备好的dom，初始化echarts实例
+    var cpuChart = echarts.init(document.getElementById('cpuDiv'));
+    function loadCpu()
+    {
+        $.getJSON('/cpu').done(function (data) {
+            var dataMap = data.data;
+            cpuChart.setOption({
+                title: {
+                    text: 'CPU使用率'
+                },
+                tooltip: {},
+                legend: {
+                    data:['CPU使用率']
+                },
+                xAxis: {
+                    data: ["CPU1","CPU2","CPU3","CPU4"]
+                },
+                yAxis: {},
+                series: [{
+                    name: 'CPU使用率',
+                    type: 'bar',
+                    data: [dataMap[0], dataMap[1], dataMap[2], dataMap[3]]
+                }]
+            });
+        });
+    }
+    window.setInterval(loadCpu, 1000);
+</script>
+
+<div id="memberDiv" style="width:600px;height:400px;"></div>
+<script type="text/javascript">
+    var memberChart = echarts.init(document.getElementById('memberDiv'));
+    function loadMember()
+    {
+        $.getJSON('/member').done(function (data) {
+            var dataMap = data.data;
+            memberChart.setOption({
+                tooltip : {
+                    trigger: 'item',
+                    formatter: "{a} <br/>{b} : {c} ({d}%)"
+                },
+                series: [{
+                    name:'内存使用',
+                    type: 'pie',
+                    data: [
+                        {name:'使用',value:dataMap['use']},
+                        {name:'空闲',value:dataMap['free']}
+                    ]
+                }]
+            });
+        });
+    }
+    window.setInterval(loadMember, 1000);
+</script>
+
+
 </body>
 </html>

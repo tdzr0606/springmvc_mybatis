@@ -9,12 +9,26 @@
         <param-value>classpath:spring-context.xml</param-value>
     </context-param>
 
+    <!-- spring session 共享 -->
+    <filter>
+        <filter-name>springSessionRepositoryFilter</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>springSessionRepositoryFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>ERROR</dispatcher>
+    </filter-mapping>
+
     <!-- 继承Spring上下文初始化用监听器 -->
     <listener>
         <listener-class>com.nature.listener.WebContextListener</listener-class>
     </listener>
 
 
+
+    <!-- 静态资源映射 -->
     <servlet-mapping>
         <servlet-name>default</servlet-name>
         <url-pattern>/js/*</url-pattern>
@@ -36,6 +50,10 @@
         <servlet-name>DispatcherServlet</servlet-name>
         <url-pattern>/</url-pattern>
     </servlet-mapping>
+
+
+
+
     <!-- 验证码配置 -->
     <filter>
         <filter-name>validateCodeFilter</filter-name>
@@ -61,7 +79,6 @@
         <filter-name>validateCodeFilter</filter-name>
         <url-pattern>/vcode</url-pattern>
     </filter-mapping>
-
     <filter-mapping>
         <filter-name>httpMethodFilter</filter-name>
         <servlet-name>DispatcherServlet</servlet-name>
@@ -83,6 +100,7 @@
         <url-pattern>/*</url-pattern>
         <dispatcher>REQUEST</dispatcher>
     </filter-mapping>
+
 
     <!-- Session过期时间配置 -->
     <session-config>

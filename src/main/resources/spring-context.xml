@@ -30,4 +30,7 @@
 
     <import resource="spring-jdbc.xml" />
 
+	<!-- 共享session 处理-->
+	<import resource="spring-session.xml"/>
+
 </beans>

@@ -9,6 +9,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.Random;
+
 /**
  * springmvc_mybatis
  * IndexController
@@ -23,6 +26,8 @@ public class IndexController extends BaseController
     AdminService adminService;
     @Autowired
     SigarUtils sigarUtils;
+    @Autowired
+    HttpServletRequest request;
 
 
     @RequestMapping(value = "/")
@@ -50,5 +55,23 @@ public class IndexController extends BaseController
     public CommonResult member() throws Exception
     {
         return resultSuccessWrapper("成功",sigarUtils.member());
+    }
+
+
+    // 设置 session
+    @RequestMapping(value = "/sessionSet")
+    @ResponseBody
+    public CommonResult session()
+    {
+        request.getSession().setAttribute("user", new Random().nextInt(1000));
+        return resultSuccessWrapper("成功",null);
+    }
+
+    // 获取session
+    @RequestMapping(value = "/sessionGet")
+    @ResponseBody
+    public CommonResult sessionGet()
+    {
+        return resultSuccessWrapper("session",request.getSession().getAttribute("user"));
     }
 }

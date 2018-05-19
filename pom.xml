@@ -18,7 +18,20 @@
 
     <dependencies>
 
+        <!-- spring session 管理 -->
+        <dependency>
+            <groupId>org.springframework.session</groupId>
+            <artifactId>spring-session-data-redis</artifactId>
+            <version>1.2.1.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <version>2.8.1</version>
+        </dependency>
 
+
+        <!-- 系统硬件信息 -->
         <dependency>
             <groupId>org.fusesource</groupId>
             <artifactId>sigar</artifactId>

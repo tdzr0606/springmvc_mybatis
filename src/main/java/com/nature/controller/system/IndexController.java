@@ -4,6 +4,8 @@ import com.nature.controller.basic.BaseController;
 import com.nature.service.system.AdminService;
 import com.nature.util.CommonResult;
 import com.nature.component.SigarUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +30,8 @@ public class IndexController extends BaseController
     SigarUtils sigarUtils;
     @Autowired
     HttpServletRequest request;
+
+    Logger logger = LoggerFactory.getLogger(IndexController.class);
 
 
     @RequestMapping(value = "/")
@@ -63,6 +67,7 @@ public class IndexController extends BaseController
     @ResponseBody
     public CommonResult session()
     {
+        logger.info(String.format("%s:%s,sessio 设置",request.getRemoteAddr(),request.getRemotePort()));
         request.getSession().setAttribute("user", new Random().nextInt(1000));
         return resultSuccessWrapper("成功",null);
     }
@@ -72,6 +77,8 @@ public class IndexController extends BaseController
     @ResponseBody
     public CommonResult sessionGet()
     {
-        return resultSuccessWrapper("session",request.getSession().getAttribute("user"));
+        logger.info(String.format("%s:%s,sessio 获取",request.getRemoteAddr(),request.getRemotePort()));
+        return resultSuccessWrapper("session",request.getRemoteHost() + "-"+ request.getSession().getAttribute
+                ("user"));
     }
 }

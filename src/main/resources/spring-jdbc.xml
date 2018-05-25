@@ -12,17 +12,16 @@
     <tx:annotation-driven transaction-manager="jdbcTransactionManager"/>
 
 
-    <bean id="c3p0" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+    <bean id="c3p0" class="com.alibaba.druid.pool.DruidDataSource"
           destroy-method="close">
-        <property name="driverClass" value="${c3p0.driverClass}"/>
-        <property name="jdbcUrl" value="${c3p0.jdbcUrl}"/>
-        <property name="user" value="${c3p0.user}"/>
+        <property name="driverClassName" value="${c3p0.driverClass}"/>
+        <property name="url"
+                  value="${c3p0.jdbcUrl}"/>
+        <property name="username" value="${c3p0.user}"/>
         <property name="password" value="${c3p0.password}"/>
-        <property name="initialPoolSize" value="${c3p0.initialPoolSize}"/>
-        <property name="minPoolSize" value="${c3p0.minPoolSize}"/>
-        <property name="maxPoolSize" value="${c3p0.maxPoolSize}"/>
-        <property name="acquireIncrement" value="${c3p0.acquireIncrement}"/>
-        <property name="maxIdleTime" value="${c3p0.maxIdleTime}"/>
+        <property name="initialSize" value="${c3p0.initialPoolSize}"/>
+        <property name="minIdle" value="${c3p0.minPoolSize}"/>
+        <property name="maxActive" value="${c3p0.maxPoolSize}"/>
     </bean>
 
     <bean id="jdbcTransactionManager"

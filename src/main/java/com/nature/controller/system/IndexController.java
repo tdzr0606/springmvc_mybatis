@@ -81,4 +81,20 @@ public class IndexController extends BaseController
         return resultSuccessWrapper("session",request.getRemoteHost() + "-"+ request.getSession().getAttribute
                 ("user"));
     }
+
+
+    /**
+     * 测试mybatis 查询
+     * Mybatis common result.
+     *
+     * @return the common result
+     * @author:竺志伟
+     * @date :2018-05-29 09:45:47
+     */
+    @RequestMapping(value = "/mybatis")
+    @ResponseBody
+    public CommonResult mybatis()
+    {
+        return resultSuccessWrapper("用户查询成功",adminService.listPage(1,10,null));
+    }
 }

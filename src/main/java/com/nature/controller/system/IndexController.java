@@ -119,7 +119,7 @@ public class IndexController extends BaseController
 
 
     /**
-     * 图片保存
+     * 签名图片保存
      * Js sign save common result.
      *
      * @param imgData the img data

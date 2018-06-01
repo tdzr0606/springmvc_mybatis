@@ -122,6 +122,23 @@
             <artifactId>poi-ooxml-schemas</artifactId>
             <version>3.12</version>
         </dependency>
+        <!-- docx转pdf -->
+        <dependency>
+            <groupId>com.lowagie</groupId>
+            <artifactId>itext</artifactId>
+            <version>2.1.7</version>
+        </dependency>
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>itextpdf</artifactId>
+            <version>5.5.11</version>
+        </dependency>
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>itext-asian</artifactId>
+            <version>5.2.0</version>
+        </dependency>
+
         <!--转换Docx时需用到-->
         <!--
           HSSF － 提供读写Microsoft Excel XLS格式档案的功能。

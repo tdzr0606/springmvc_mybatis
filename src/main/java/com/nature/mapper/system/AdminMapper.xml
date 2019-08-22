@@ -63,7 +63,7 @@
         update web_admin set password = #{password} where id = ${id}
     </update>
     
-    
+    <!-- 批量删除 -->
     <delete id="deleteByIds" parameterType="java.util.Arrays">
         DELETE from web_admin where id in
         <foreach collection="ids" index="index" item="item" open="(" separator="," close=")">

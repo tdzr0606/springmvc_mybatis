@@ -6,12 +6,9 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.itextpdf.text.*;
+import com.itextpdf.text.Document;
 import com.itextpdf.text.pdf.BaseFont;
-import org.apache.poi.xwpf.usermodel.XWPFDocument;
-import org.apache.poi.xwpf.usermodel.XWPFParagraph;
-import org.apache.poi.xwpf.usermodel.XWPFPicture;
-import org.apache.poi.xwpf.usermodel.XWPFPictureData;
-import org.apache.poi.xwpf.usermodel.XWPFRun;
+import org.apache.poi.xwpf.usermodel.*;
 import com.itextpdf.text.pdf.PdfWriter;
 
 /**
@@ -69,20 +66,22 @@ public class Doc2PdfUtils
                     {
                         XWPFPicture pic = iterator.next();
                         XWPFPictureData picdata = pic.getPictureData();
-                        byte[] bytepic = picdata.getData();
-                        Image imag = Image.getInstance(bytepic);
+                        Image imag = Image.getInstance(picdata.getData());
                         pdfdoc.add(imag);
                     }
+
 
                     //construct unicode string
                     String text = run.getText(-1);
                     if(text != null)
                     {
                         //add string to the pdf document
-                        pdfdoc.add(new Chunk(new String(text.getBytes(), "UTF-8"), new Font(baseFont, run.getFontSize())));
-
+                        pdfdoc.add(new Chunk(new String(text.getBytes(), "UTF-8"),
+                                new Font(baseFont, run.getFontSize())));
                     }
                 }
+
+
                 //output new line
                 pdfdoc.add(new Chunk(Chunk.NEWLINE));
             }
